@@ -7,11 +7,11 @@ public class AppRunner {
         int number = 1234;
         int multiplier = 123;
 
-        getResultMultiplication(number, multiplier);
+        System.out.println(getResultMultiplication(number, multiplier));
 
     }
 
-    public static void getResultMultiplication(int number, int multiplier) {
+    private static String getResultMultiplication(int number, int multiplier) {
 
         char[] numbers = String.valueOf(number).toCharArray();
         char[] multipliers = String.valueOf(multiplier).toCharArray();
@@ -20,9 +20,10 @@ public class AppRunner {
         int count = 0;
         int i = 0;
 
-        System.out.println(getStringFromChar(' ', numbers.length) + number);
-        System.out.println(getStringFromChar(' ', numbers.length + 1) + multiplier);
-        System.out.println(getStringFromChar(' ', numbers.length) + getStringFromChar('_', numbers.length));
+        StringBuilder output = new StringBuilder()
+                .append(getStringFromChar(' ', numbers.length) + number + "\n")
+                .append(getStringFromChar(' ', numbers.length + 1) + multiplier + "\n")
+                .append(getStringFromChar(' ', numbers.length) + getStringFromChar('_', numbers.length) + "\n");
 
         for(int j = multipliers.length - 1; j >= 0; j--) {
             Character[] intermediateArrays = new Character[numbers.length];
@@ -44,22 +45,22 @@ public class AppRunner {
 
                     if (enlargedArrays != null){
                         arrayFill(enlargedArrays, result % 10);
-                        enlargedArrays[0] = null; //тут почему-то после добавления значения result в новый массив, нулевая ячейка тоже заполнялась ... пришлось таким образом перезаписать её значение
+                        enlargedArrays[0] = null; //here for some reason, after adding the result value to the new array, the zero cell was also filled in ... so it was necessary to overwrite its value
                         arrayFill(enlargedArrays, memory);
-                        System.out.println(getStringFromChar(' ', numbers.length - count) + getLine(enlargedArrays));
+                        output.append(getStringFromChar(' ', numbers.length - count) + getLine(enlargedArrays) + "\n");
                         count++;
                     }
                 }
                 else if(i == 0) {
-                    System.out.println(getStringFromChar(' ', numbers.length - count) + getLine(intermediateArrays));
+                    output.append(getStringFromChar(' ', numbers.length - count) + getLine(intermediateArrays) + "\n");
                     count++;
                 }
             }
         }
 
-        System.out.println(getStringFromChar('_', numbers.length + count));
+        output.append(getStringFromChar('_', numbers.length + count));
 
-
+        return output.toString();
     }
 
     private static String getStringFromChar(char ch, int length){
